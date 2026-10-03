@@ -452,7 +452,12 @@ fn handlers_attached_while_pending_suppress_unhandled_rejection() {
 #[test]
 fn keepalive_fetch_survives_navigation() {
     let srv = TestServer::spawn(|req| match req.path.as_str() {
-        "/beacon" | "/plain" => TestResponse::ok("ack", "text/plain").delayed(400),
+        // The previous 400 ms delay was shorter than a loaded Windows CI runner could
+        // take to synchronously commit /next, allowing the keepalive request to finish
+        // before this test reached its observation point. Keep the response genuinely
+        // in flight while the replacement navigation commits; completion is still
+        // verified below.
+        "/beacon" | "/plain" => TestResponse::ok("ack", "text/plain").delayed(3_000),
         "/next" => page("done = true;"),
         _ => page(
             r#"fetch('/beacon', { method: 'POST', body: 'bye', keepalive: true });
