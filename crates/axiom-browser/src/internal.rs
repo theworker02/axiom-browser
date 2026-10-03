@@ -108,13 +108,22 @@ const NEWTAB_HTML: &str = r#"<!DOCTYPE html>
   html, body { height: 100%; margin: 0; }
   body {
     font-family: "Segoe UI", system-ui, sans-serif;
-    background: linear-gradient(160deg, #eef1f6 0%, #f8f9fb 45%, #e8edf5 100%);
-    color: #1c1f26;
+    background: radial-gradient(circle at 50% 28%, #243b70 0%, #111827 42%, #080d19 100%);
+    color: #f3f7ff;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .wrap { text-align: center; max-width: 520px; padding: 24px; }
+  .mark {
+    width: 86px; height: 86px; margin: 0 auto 20px; border: 8px solid #447aff;
+    border-radius: 50%; position: relative; box-sizing: border-box;
+    box-shadow: 0 0 0 10px #447aff22, 0 18px 56px #0008;
+  }
+  .mark::before { content: "A"; color: #f3f7ff; font-size: 50px; font-weight: 800;
+    line-height: 70px; position: absolute; inset: 0; }
+  .mark::after { content: ""; position: absolute; left: 12px; right: 12px; top: 37px;
+    border-top: 6px solid #f3f7ff; transform: skewX(-16deg); }
   h1 {
     font-size: 42px;
     letter-spacing: 0.18em;
@@ -123,30 +132,31 @@ const NEWTAB_HTML: &str = r#"<!DOCTYPE html>
   }
   .hint {
     font-size: 15px;
-    color: #5a6270;
+    color: #b8c7ea;
     margin-bottom: 28px;
   }
   .box {
-    border: 1px solid #c5ccd8;
-    background: #ffffffcc;
+    border: 1px solid #5174ba;
+    background: #17243dcc;
     border-radius: 10px;
     padding: 14px 18px;
-    color: #7a8494;
+    color: #cbd8f5;
     font-size: 14px;
   }
   .recent {
     margin-top: 36px;
     font-size: 13px;
-    color: #8a93a3;
+    color: #8ea4d4;
   }
 </style>
 </head>
 <body>
   <div class="wrap">
+    <div class="mark" aria-label="Axiom"></div>
     <h1>AXIOM</h1>
-    <p class="hint">Search or enter address</p>
-    <div class="box">Use the omnibox above — Ctrl+L to focus</div>
-    <p class="recent">Recently visited — architecture placeholder</p>
+    <p class="hint">Independent browser engine</p>
+    <div class="box">Search or enter an address above — Ctrl+L to focus</div>
+    <p class="recent">No AI. No telemetry. Your profile stays local.</p>
   </div>
 </body>
 </html>

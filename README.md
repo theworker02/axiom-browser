@@ -1,5 +1,9 @@
 # Axiom
 
+<p align="center">
+  <img src="assets/axiom-mark.svg" width="128" height="128" alt="Axiom orbital A mark">
+</p>
+
 [![CI](https://img.shields.io/badge/CI-cargo%20test%20%2B%20clippy-0B7A75?style=for-the-badge&logo=rust&logoColor=white)](https://github.com/theworker02/axiom)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2F2F2F?style=for-the-badge)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-2021-dea584?style=for-the-badge&logo=rust&logoColor=black)](https://www.rust-lang.org/)
@@ -11,6 +15,9 @@
 [![thanks.dev](https://img.shields.io/badge/thanks.dev-theworker02-111111?style=for-the-badge)](https://thanks.dev/u/gh/theworker02)
 
 **Axiom** is an independent, from-scratch **browser engine and browser** written in Rust. Temporary name until branding settles.
+
+The **orbital A** is Axiom's official mark. It is embedded into the native Windows executable,
+used by the desktop window at runtime, and appears on the trusted new-tab page.
 
 Axiom fetches, parses, styles, lays out, paints, and displays pages in a native window — **without** embedding Chromium, Blink, WebKit, Gecko, Servo, Electron, CEF, or a system WebView for page rendering.
 

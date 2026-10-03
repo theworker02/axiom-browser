@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Axiom orbital A mark</title>
+  <desc id="desc">A blue orbital ring intersecting a stylized letter A.</desc>
+  <rect width="256" height="256" rx="56" fill="#111827"/>
+  <circle cx="128" cy="128" r="74" fill="none" stroke="#447aff" stroke-width="20"/>
+  <path d="M91 188 132 64l42 124M109 143h46" fill="none" stroke="#f3f7ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="18"/>
+</svg>

@@ -20,6 +20,8 @@ Format inspired by [Keep a Changelog](https://keepachangelog.com/). Axiom versio
   `Document.contentType` conformance tests.
 - Public privacy statement: no AI integration, telemetry, analytics, account requirement, or
   private-browsing data upload path.
+- Official orbital-A SVG mark, embedded Windows executable icon, native window icon, and branded
+  trusted new-tab page.
 
 ### Changed — Compatibility milestone
 
