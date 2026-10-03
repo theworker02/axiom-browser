@@ -2,6 +2,7 @@
 
 use std::num::NonZeroU32;
 use std::rc::Rc;
+use std::time::Instant;
 
 use softbuffer::{Context, Surface};
 use thiserror::Error;
@@ -191,6 +192,7 @@ pub fn run_browser(mut browser: Browser, initial_url: &str) -> Result<(), GfxErr
         cursor: (0.0, 0.0),
         composed: Framebuffer::new(1024, 768),
         modifiers: ModifiersState::default(),
+        animation_origin: Instant::now(),
     };
 
     event_loop
@@ -208,6 +210,9 @@ struct BrowserApp {
     cursor: (f32, f32),
     composed: Framebuffer,
     modifiers: ModifiersState,
+    /// Native, state-driven chrome motion. This is deliberately independent of
+    /// page content and is disabled by the persisted reduced-motion preference.
+    animation_origin: Instant,
 }
 
 impl ApplicationHandler for BrowserApp {
@@ -440,6 +445,16 @@ impl BrowserApp {
         let w = self.surface_width.max(1);
         let h = self.surface_height.max(1);
         let state = self.browser.chrome_state();
+        let animation_step = if self.browser.settings.reduced_motion {
+            0
+        } else {
+            ((self.animation_origin.elapsed().as_millis() / 180) % 2) as u8
+        };
+        let loading_accent = if animation_step == 0 {
+            0xff_72a7ff
+        } else {
+            0xff_a9c8ff
+        };
         let mut fb = Framebuffer::new(w, h);
 
         // --- Tab strip (trusted) ---
@@ -484,7 +499,7 @@ impl BrowserApp {
                     TAB_STRIP_H - 3,
                     tab_w.saturating_sub(4),
                     2,
-                    0xff_72a7ff,
+                    loading_accent,
                 );
             }
         }
@@ -571,8 +586,8 @@ impl BrowserApp {
         );
         // Focus ring
         if omni_focused {
-            fill(&mut fb, omni_x, TAB_STRIP_H + 8, omni_w, 1, 0xff_2a6aff);
-            fill(&mut fb, omni_x, TAB_STRIP_H + 35, omni_w, 1, 0xff_2a6aff);
+            fill(&mut fb, omni_x, TAB_STRIP_H + 8, omni_w, 1, loading_accent);
+            fill(&mut fb, omni_x, TAB_STRIP_H + 35, omni_w, 1, loading_accent);
         }
         let omni = &self.browser.chrome.omnibox;
         let text = if omni.editing {
@@ -668,7 +683,7 @@ impl BrowserApp {
                 0xff_5a6270,
             );
         } else if state.loading {
-            blit_text_approx(&mut fb, 8, content_bottom + 6, "Loading…", 0xff_2a6aff);
+            blit_text_approx(&mut fb, 8, content_bottom + 6, "Loading…", loading_accent);
         }
 
         if let Some(window) = &self.window {

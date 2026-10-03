@@ -1,8 +1,12 @@
 # Privacy statement
 
+## Agent-assisted repository setup
+
+The optional `.agents/skills/axiom-setup` repository skill is a development/setup guide for compatible coding agents. It is not shipped as an in-browser AI feature and does not alter Axiom's no-AI, no-telemetry, local-first browser behavior. Installing that skill into an agent-global directory is an explicit, user-approved action.
+
 ## Product guarantees
 
-Axiom 1.2.8 has **no AI integration**, telemetry service, analytics SDK, advertising SDK,
+Axiom 1.3.1 has **no AI integration**, telemetry service, analytics SDK, advertising SDK,
 tracking beacon, account system, or automatic crash-report uploader. It does not send browser
 history, bookmarks, open tabs, profile metadata, cookies, Web Storage, downloads, or private-mode
 activity to an Axiom-operated service.

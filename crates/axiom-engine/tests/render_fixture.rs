@@ -310,7 +310,11 @@ fn before_and_after_generate_boxes() {
     // Pixels are 0xAABBGGRR.
     let at = |x: u32, y: u32| fb.pixels[(y * fb.width + x) as usize];
     assert_eq!(at(10, 15), 0xff_ff_00_00, "float");
-    assert_eq!(at(50, 35), 0xff_00_ff_00, "the clearfix pushes the next box below it");
+    assert_eq!(
+        at(50, 35),
+        0xff_00_ff_00,
+        "the clearfix pushes the next box below it"
+    );
     assert_eq!(at(5, 45), 0xff_00_00_ff, "::before");
     assert_eq!(at(25, 55), 0xff_00_80_00, ":after");
     assert_eq!(at(5, 55), 0xff_ff_ff_ff, "beside the :after box");

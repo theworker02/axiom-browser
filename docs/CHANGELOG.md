@@ -1,5 +1,20 @@
 # Changelog
 
+[1.3.1]: https://github.com/theworker02/axiom-browser/releases/tag/v1.3.1
+
+## [1.3.1] — 2026-10-03
+
+### Changed
+
+- Native desktop chrome now uses a reduced-motion-aware, state-driven loading accent.
+- Installed Windows builds store the normal profile under `%LOCALAPPDATA%\Axiom\Profile` instead of the application working directory.
+- Release artifacts, NSIS metadata, acquisition guidance and trusted version diagnostics are aligned to 1.3.1.
+
+### Added
+
+- `.agents/skills/axiom-setup`: an opt-in repository setup skill for compatible coding agents, documented in `docs/AGENT_SETUP.md`. It does not add AI, telemetry or tracking to Axiom, and it requires explicit consent for external or destructive setup actions.
+
+
 All notable changes to Axiom are documented here. Dates use ISO-8601 (UTC-ish project local).
 
 Format inspired by [Keep a Changelog](https://keepachangelog.com/). Axiom versions follow the workspace `Cargo.toml` version.

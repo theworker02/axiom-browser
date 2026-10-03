@@ -35,11 +35,15 @@ fn main() -> ExitCode {
 
     let nav = resolve_nav_url(&url);
 
-    let data = PathBuf::from("target/axiom-profile");
+    // Installed applications cannot assume that their working directory is writable
+    // (on Windows it is commonly Program Files). Keep persistent browser data in the
+    // user's application-data location instead. The development fallback remains
+    // deterministic for environments without an OS application-data directory.
+    let data = default_profile_dir();
     let browser = if private {
         // Preferences (search engine, homepage) carry over; history, cookies and cache
         // of the normal profile do not.
-        match BrowserDataStore::read_settings(data) {
+        match BrowserDataStore::read_settings(data.clone()) {
             Ok(Some(settings)) => Browser::new_private_inheriting(&settings, 1024, 768),
             Ok(None) => Browser::new_private(1024, 768),
             Err(e) => {
@@ -74,6 +78,31 @@ fn main() -> ExitCode {
             ExitCode::FAILURE
         }
     }
+}
+
+fn default_profile_dir() -> PathBuf {
+    #[cfg(target_os = "windows")]
+    {
+        if let Some(root) = env::var_os("LOCALAPPDATA") {
+            return PathBuf::from(root).join("Axiom").join("Profile");
+        }
+    }
+
+    #[cfg(not(target_os = "windows"))]
+    {
+        if let Some(root) = env::var_os("XDG_DATA_HOME") {
+            return PathBuf::from(root).join("axiom").join("profile");
+        }
+        if let Some(home) = env::var_os("HOME") {
+            return PathBuf::from(home)
+                .join(".local")
+                .join("share")
+                .join("axiom")
+                .join("profile");
+        }
+    }
+
+    env::temp_dir().join("axiom-profile")
 }
 
 fn resolve_nav_url(url: &str) -> String {
@@ -160,5 +189,20 @@ fn run_headless(url: &str) -> ExitCode {
     } else {
         eprintln!("axiom: no framebuffer");
         ExitCode::FAILURE
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::default_profile_dir;
+
+    #[test]
+    fn default_profile_directory_is_app_scoped() {
+        let path = default_profile_dir();
+        assert!(path.ends_with("Profile") || path.ends_with("profile"));
+        assert!(path
+            .to_string_lossy()
+            .to_ascii_lowercase()
+            .contains("axiom"));
     }
 }
