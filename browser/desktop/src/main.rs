@@ -64,7 +64,9 @@ fn main() -> ExitCode {
     let mut browser = match browser {
         Ok(b) => b,
         Err(e) => {
-            eprintln!("axiom: profile error: {e}");
+            let message = startup_error_message(&e.to_string());
+            report_startup_error(&message);
+            eprintln!("axiom: {message}");
             return ExitCode::FAILURE;
         }
     };
@@ -103,6 +105,46 @@ fn default_profile_dir() -> PathBuf {
     }
 
     env::temp_dir().join("axiom-profile")
+}
+
+fn startup_error_message(error: &str) -> String {
+    if error.contains("profile already in use") {
+        return "Axiom is already running with this profile. Close the other Axiom window before opening another normal window, or launch with --private for an isolated private session.".into();
+    }
+    format!("Axiom could not open its browser profile: {error}")
+}
+
+#[cfg(windows)]
+fn report_startup_error(message: &str) {
+    const MB_ICONERROR: u32 = 0x0000_0010;
+    let mut text: Vec<u16> = message.encode_utf16().collect();
+    text.push(0);
+    let mut title: Vec<u16> = "Axiom startup issue".encode_utf16().collect();
+    title.push(0);
+    // This is the only pre-window native failure path: a profile lock otherwise
+    // leaves a double-click launch with no visible explanation.
+    unsafe {
+        MessageBoxW(
+            std::ptr::null_mut(),
+            text.as_ptr(),
+            title.as_ptr(),
+            MB_ICONERROR,
+        );
+    }
+}
+
+#[cfg(not(windows))]
+fn report_startup_error(_message: &str) {}
+
+#[cfg(windows)]
+#[link(name = "user32")]
+extern "system" {
+    fn MessageBoxW(
+        window: *mut core::ffi::c_void,
+        text: *const u16,
+        title: *const u16,
+        style: u32,
+    ) -> i32;
 }
 
 fn resolve_nav_url(url: &str) -> String {
@@ -194,7 +236,7 @@ fn run_headless(url: &str) -> ExitCode {
 
 #[cfg(test)]
 mod tests {
-    use super::default_profile_dir;
+    use super::{default_profile_dir, startup_error_message};
 
     #[test]
     fn default_profile_directory_is_app_scoped() {
@@ -204,5 +246,12 @@ mod tests {
             .to_string_lossy()
             .to_ascii_lowercase()
             .contains("axiom"));
+    }
+
+    #[test]
+    fn profile_lock_has_a_human_startup_message() {
+        let message = startup_error_message("profile already in use by another process");
+        assert!(message.contains("already running"));
+        assert!(message.contains("--private"));
     }
 }

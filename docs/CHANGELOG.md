@@ -8,6 +8,7 @@
 
 - Native desktop chrome now uses a reduced-motion-aware, state-driven loading accent.
 - Installed Windows builds store the normal profile under `%LOCALAPPDATA%\Axiom\Profile` instead of the application working directory.
+- A profile-lock startup failure now opens a native explanatory dialog on Windows instead of silently exiting.
 - Release artifacts, NSIS metadata, acquisition guidance and trusted version diagnostics are aligned to 1.3.1.
 
 ### Added

@@ -10,6 +10,7 @@ See the detailed project changelog:
 
 - Polished the native "Orbit Rail" chrome with a state-driven loading accent and a reduced-motion-aware animation path. This is native Rust/winit rendering; Framer Motion is not applicable because Axiom does not use a web UI runtime.
 - Moved the installed desktop profile root from a relative working-directory path to `%LOCALAPPDATA%\\Axiom\\Profile` on Windows, preventing installed builds from attempting to write into Program Files. Private profiles remain memory-only.
+- A second normal-profile launch now presents a native profile-lock explanation instead of silently exiting.
 - Fixed release automation to use the 1.3.1 notes/artifacts and restored the workspace formatting gate.
 - Added the opt-in `.agents/skills/axiom-setup` repository skill and `docs/AGENT_SETUP.md` for agent-assisted local setup. It requires explicit consent for dependency downloads, profile changes, global skill installation, publishing, or other external writes; it does not add browser AI, telemetry, or tracking.
 
