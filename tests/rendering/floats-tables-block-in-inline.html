@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<title>Floats, tables and block-in-inline</title>
+<style>
+  body { margin: 0; }
+  .float { float: left; width: 50px; height: 50px; background: #0000ff; }
+  .bfc { overflow: hidden; height: 50px; background: #008000; }
+  table { border-spacing: 0; }
+  td { padding: 0; width: 40px; height: 20px; }
+  .inline { background: #ff0000; margin: 30px 0; }
+  .inline div { height: 20px; background: #ffff00; }
+</style>
+<!-- A left float; a block formatting context beside it (not under it). -->
+<div class="float"></div>
+<div class="bfc"></div>
+<!-- Two 40x20 table cells side by side. -->
+<table><tr><td style="background:#00ffff"></td><td style="background:#ff00ff"></td></tr></table>
+<!-- An inline box around a block paints no background and ignores vertical margins. -->
+<span class="inline"><div></div></span>

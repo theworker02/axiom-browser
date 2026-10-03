@@ -1,0 +1,33 @@
+[package]
+name = "axiom-engine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Browser engine pipeline orchestration"
+
+[dependencies]
+axiom-url.workspace = true
+axiom-csp.workspace = true
+axiom-net.workspace = true
+axiom-html.workspace = true
+axiom-xml.workspace = true
+axiom-dom.workspace = true
+axiom-css.workspace = true
+axiom-style.workspace = true
+axiom-text.workspace = true
+axiom-layout.workspace = true
+axiom-paint.workspace = true
+axiom-js.workspace = true
+axiom-loader.workspace = true
+axiom-events.workspace = true
+axiom-compositor.workspace = true
+axiom-trace.workspace = true
+axiom-document.workspace = true
+thiserror.workspace = true
+log.workspace = true
+anyhow.workspace = true
+parking_lot.workspace = true
+serde_json.workspace = true
+ring = "0.17"
+
+[dev-dependencies]

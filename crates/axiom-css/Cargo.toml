@@ -1,0 +1,9 @@
+[package]
+name = "axiom-css"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "CSS parser for the Axiom browser engine"
+
+[dependencies]
+thiserror.workspace = true

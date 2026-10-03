@@ -1,0 +1,14 @@
+[package]
+name = "axiom-paint"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Display list and rasterizer for Axiom"
+
+[dependencies]
+axiom-layout.workspace = true
+axiom-style.workspace = true
+log.workspace = true
+
+[dev-dependencies]
+axiom-html.workspace = true

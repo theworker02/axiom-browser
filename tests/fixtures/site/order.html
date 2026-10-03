@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Script order</title>
+<script src="/js/setup.js"></script>
+<!-- Parser-blocking: the slow one completes last but runs first. -->
+<script src="/d/300/js/blocking-1.js"></script>
+<script src="/js/blocking-2.js"></script>
+<!-- Deferred: completion order is the reverse of document order. -->
+<script defer src="/d/300/js/defer-1.js"></script>
+<script defer src="/d/150/js/defer-2.js"></script>
+<script defer src="/js/defer-3.js"></script>
+</head>
+<body>
+<p id="first">first</p>
+<script>log.push('inline:' + (document.getElementById('first') !== null) + ':' + (document.getElementById('second') !== null) + ':' + document.readyState);</script>
+<p id="second">second</p>
+<!-- DOMContentLoaded must not wait for this image; load must. -->
+<img src="/d/1500/img/slow.png">
+</body>
+</html>

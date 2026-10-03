@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — Flexbox</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    .note { background: #fff3cd; border: 1px solid #ffc107; padding: 12px; margin-bottom: 24px; font-size: 14px; }
+    /* Flex may be PARTIAL in Phase 2 Wave B; layout falls back to block where unsupported. */
+    .toolbar {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      background: #263238;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    .toolbar .item {
+      background: #455a64;
+      color: #fff;
+      padding: 8px 16px;
+    }
+    .toolbar .spacer { flex: 1; background: transparent; }
+    .column {
+      display: flex;
+      flex-direction: column;
+      min-height: 120px;
+      border: 2px dashed #999;
+      padding: 8px;
+    }
+    .column .cell {
+      background: #e3f2fd;
+      border: 1px solid #2196f3;
+      padding: 12px;
+      margin: 4px 0;
+    }
+    .wrap-row {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 320px;
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+    .chip {
+      background: #f3e5f5;
+      border: 1px solid #9c27b0;
+      padding: 6px 10px;
+      margin: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flexbox</h1>
+  <p class="note">Exercises <code>display: flex</code>, direction, flex-grow spacer, and wrap. Full flex alignment is Wave B; expect block fallback until implemented.</p>
+
+  <h2>Horizontal toolbar</h2>
+  <div class="toolbar">
+    <div class="item">Back</div>
+    <div class="item">Forward</div>
+    <div class="spacer"></div>
+    <div class="item">Reload</div>
+  </div>
+
+  <h2>Column stack</h2>
+  <div class="column">
+    <div class="cell">Header region</div>
+    <div class="cell">Main content</div>
+    <div class="cell">Footer region</div>
+  </div>
+
+  <h2>Flex wrap</h2>
+  <div class="wrap-row">
+    <span class="chip">Rust</span>
+    <span class="chip">HTML</span>
+    <span class="chip">CSS</span>
+    <span class="chip">Layout</span>
+    <span class="chip">Paint</span>
+    <span class="chip">JS</span>
+  </div>
+</body>
+</html>

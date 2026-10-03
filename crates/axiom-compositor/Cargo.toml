@@ -1,0 +1,10 @@
+[package]
+name = "axiom-compositor"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Compositor layers for Axiom"
+
+[dependencies]
+axiom-paint.workspace = true
+axiom-layout.workspace = true

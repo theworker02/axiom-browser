@@ -1,0 +1,9 @@
+[package]
+name = "axiom-xml"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "XML parser (DOMParser, XMLHttpRequest responseXML) for the Axiom browser engine"
+
+[dependencies]
+axiom-dom.workspace = true

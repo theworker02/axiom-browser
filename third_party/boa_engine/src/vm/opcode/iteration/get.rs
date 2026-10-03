@@ -1,0 +1,45 @@
+use crate::{
+    builtins::iterable::IteratorHint,
+    vm::{opcode::Operation, CompletionType},
+    Context, JsResult,
+};
+
+/// `GetIterator` implements the Opcode Operation for `Opcode::GetIterator`
+///
+/// Operation:
+///  - Initialize an iterator
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct GetIterator;
+
+impl Operation for GetIterator {
+    const NAME: &'static str = "GetIterator";
+    const INSTRUCTION: &'static str = "INST - GetIterator";
+    const COST: u8 = 6;
+
+    fn execute(context: &mut Context) -> JsResult<CompletionType> {
+        let object = context.vm.pop();
+        let iterator = object.get_iterator(IteratorHint::Sync, context)?;
+        context.vm.frame_mut().iterators.push(iterator);
+        Ok(CompletionType::Normal)
+    }
+}
+
+/// `GetAsyncIterator` implements the Opcode Operation for `Opcode::GetAsyncIterator`
+///
+/// Operation:
+///  - Initialize an async iterator.
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct GetAsyncIterator;
+
+impl Operation for GetAsyncIterator {
+    const NAME: &'static str = "GetAsyncIterator";
+    const INSTRUCTION: &'static str = "INST - GetAsyncIterator";
+    const COST: u8 = 6;
+
+    fn execute(context: &mut Context) -> JsResult<CompletionType> {
+        let object = context.vm.pop();
+        let iterator = object.get_iterator(IteratorHint::Async, context)?;
+        context.vm.frame_mut().iterators.push(iterator);
+        Ok(CompletionType::Normal)
+    }
+}

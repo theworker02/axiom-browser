@@ -1,0 +1,12 @@
+[package]
+name = "axiom-document"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Document loading vocabulary: document/resource identity, resource registry, page lifecycle, script classification, policy hooks"
+
+[dependencies]
+axiom-url.workspace = true
+axiom-dom.workspace = true
+axiom-net.workspace = true
+axiom-loader.workspace = true

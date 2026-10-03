@@ -1,0 +1,11 @@
+[package]
+name = "axiom-trace"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Structured tracing for the Axiom browser engine"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+parking_lot.workspace = true

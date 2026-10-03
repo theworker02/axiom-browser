@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dynamic insertion</title>
+<script src="/js/setup.js"></script>
+</head>
+<body>
+<p id="target">target</p>
+<script>
+var s = document.createElement('script');
+s.setAttribute('src', '/js/dynamic.js');
+s.addEventListener('load', function () { log.push('dynamic-script:load'); });
+document.head.appendChild(s);
+
+var inline = document.createElement('script');
+inline.textContent = "log.push('inserted-inline:' + (document.currentScript !== null))";
+document.body.appendChild(inline);
+log.push('after-insert');
+
+var link = document.createElement('link');
+link.setAttribute('rel', 'stylesheet');
+link.setAttribute('href', '/css/dynamic.css');
+document.head.appendChild(link);
+
+var img = document.createElement('img');
+img.addEventListener('load', function () { log.push('dynamic-img:load'); });
+img.setAttribute('src', '/img/dynamic.png');
+document.body.appendChild(img);
+</script>
+</body>
+</html>

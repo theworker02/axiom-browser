@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<title>Flex and grid</title>
+<style>
+  body { margin: 0; }
+  /* 200px wide: flex 1 : 2 : 1 splits into 50 / 100 / 50. The third item has no
+     height and stretches to the 40px line. */
+  .row { display: flex; }
+  .row > div { height: 40px; }
+  .a { flex: 1; background: #0000ff; }
+  .b { flex: 2; background: #008000; }
+  .row > .c { flex: 1; height: auto; background: #ff0000; }
+  /* A 60px column, a 20px gap, and 1fr for the rest; items placed by area name in
+     the reverse of source order. */
+  .grid {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: 60px;
+    grid-template-areas: "side main";
+    column-gap: 20px;
+  }
+  .main { grid-area: main; background: #ff00ff; }
+  .side { grid-area: side; background: #00ffff; }
+  /* Centered in its area by justify-self / align-self. */
+  .dot { width: 10px; height: 10px; justify-self: center; align-self: center; background: #ffff00; }
+</style>
+<div class="row"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+<div class="grid">
+  <div class="main"></div>
+  <div class="side" style="display:grid"><div class="dot"></div></div>
+</div>

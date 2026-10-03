@@ -1,0 +1,18 @@
+[package]
+name = "axiom-text"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Fonts, fallback, shaping and glyph rasterization for Axiom"
+
+[dependencies]
+fontdue.workspace = true
+rustybuzz.workspace = true
+unicode-bidi.workspace = true
+unicode-linebreak.workspace = true
+log.workspace = true
+flate2.workspace = true
+wuff.workspace = true
+
+[dev-dependencies]
+brotli.workspace = true

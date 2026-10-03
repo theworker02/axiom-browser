@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Network subresources fixture</title>
+<!-- Three render-blocking stylesheets, applied in document order. -->
+<link rel="stylesheet" href="/css/0.css">
+<link rel="stylesheet" href="/css/1.css">
+<link rel="stylesheet" href="/css/2.css">
+<!-- Alternate stylesheets must not load. -->
+<link rel="alternate stylesheet" href="/css/alternate.css">
+<style>#inline { color: rgb(9, 9, 9); }</style>
+</head>
+<body>
+<p id="out">pending</p>
+<p id="inline">inline</p>
+<!-- Five parser-blocking scripts: they download in parallel but execute in order. -->
+<script src="/js/0.js"></script>
+<script src="/js/1.js"></script>
+<script src="/js/2.js"></script>
+<script src="/js/3.js"></script>
+<script src="/js/4.js"></script>
+<script>document.querySelector("#out").textContent = order.join(",");</script>
+<!-- Ten images: non-blocking, decoded as they arrive. -->
+<img src="/img/0.png"><img src="/img/1.png"><img src="/img/2.png"><img src="/img/3.png"><img src="/img/4.png">
+<img src="/img/5.png"><img src="/img/6.png"><img src="/img/7.png"><img src="/img/8.png"><img src="/img/9.png">
+</body>
+</html>

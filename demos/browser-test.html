@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Browser Test</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      background: #0f1419;
+      color: #e7e9ea;
+      line-height: 1.45;
+    }
+    header {
+      background: linear-gradient(135deg, #1d9bf0 0%, #7856ff 100%);
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { margin: 0; font-size: 22px; flex: 1; }
+    header .badge {
+      background: rgba(0,0,0,0.25);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+    main { max-width: 960px; margin: 0 auto; padding: 24px; }
+    section {
+      background: #192734;
+      border: 1px solid #38444d;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    section h2 { margin-top: 0; font-size: 18px; color: #1d9bf0; }
+    .cards { display: flex; flex-wrap: wrap; gap: 12px; }
+    .card {
+      flex: 1 1 140px;
+      background: #22303c;
+      border: 1px solid #38444d;
+      padding: 14px;
+      border-radius: 6px;
+    }
+    .card strong { display: block; font-size: 24px; color: #00ba7c; }
+    #hero-img { float: right; margin: 0 0 12px 16px; border: 2px solid #38444d; }
+    form label { display: block; margin: 8px 0 4px; font-size: 13px; }
+    input[type="text"], input[type="password"] {
+      width: 100%; max-width: 280px;
+      padding: 8px; border: 1px solid #38444d; background: #15202b; color: inherit;
+    }
+    button, input[type="submit"] {
+      background: #1d9bf0; color: #fff; border: none;
+      padding: 8px 16px; margin-top: 10px; cursor: pointer;
+    }
+    #event-log {
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      background: #15202b;
+      padding: 12px;
+      min-height: 80px;
+      border: 1px solid #38444d;
+      white-space: pre-wrap;
+    }
+    .scroll-panel {
+      height: 100px;
+      overflow: auto;
+      background: #15202b;
+      border: 1px solid #38444d;
+      padding: 8px;
+    }
+    footer { text-align: center; padding: 24px; color: #71767b; font-size: 13px; }
+    a { color: #1d9bf0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Axiom Phase 2 — Browser Test</h1>
+    <span class="badge">No Chromium · No WebKit · No Gecko</span>
+  </header>
+
+  <main>
+    <section id="overview">
+      <h2>Overview</h2>
+      <img id="hero-img" src="assets/test.png" alt="Logo" width="72" height="72">
+      <p>
+        Combined smoke test for HTML parsing, CSS cascade, box layout, typography, images,
+        forms, events, scrolling, and JavaScript. Built for the native Axiom engine in Rust.
+      </p>
+      <div class="cards">
+        <div class="card"><strong id="stat-nodes">—</strong> DOM nodes</div>
+        <div class="card"><strong id="stat-clicks">0</strong> Clicks</div>
+        <div class="card"><strong>CPU</strong> Paint path</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Selectors &amp; typography</h2>
+      <p class="lead">Type, class, and ID selectors with varied <strong>weights</strong> and sizes.</p>
+      <ul class="menu">
+        <li class="active">Navigation item</li>
+        <li>Plain item</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Form controls</h2>
+      <form id="login">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" placeholder="you@example.com">
+        <label for="pw">Password</label>
+        <input type="password" id="pw" name="pw">
+        <label><input type="checkbox" name="agree"> I agree</label>
+        <label><input type="radio" name="tier" value="a" checked> Tier A</label>
+        <label><input type="radio" name="tier" value="b"> Tier B</label>
+        <input type="submit" value="Sign in">
+      </form>
+    </section>
+
+    <section>
+      <h2>Events &amp; timers</h2>
+      <button type="button" id="btn-ping">Ping</button>
+      <button type="button" id="btn-append">Append line</button>
+      <div id="event-log">Event log…</div>
+    </section>
+
+    <section>
+      <h2>Nested scroll</h2>
+      <div class="scroll-panel" id="inner-scroll">
+        <p>Inner scroll region — content extends below.</p>
+        <p>Line 2</p><p>Line 3</p><p>Line 4</p><p>Line 5</p><p>Line 6</p><p>Line 7</p><p>Line 8</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Remote image (async)</h2>
+      <p><img src="https://via.placeholder.com/120.png" alt="Placeholder" width="120" height="120"></p>
+    </section>
+  </main>
+
+  <footer>
+    Run: <code>cargo run -p axiom-desktop -- demos/browser-test.html</code>
+  </footer>
+
+  <style>
+    ul.menu { list-style: none; padding: 0; }
+    ul.menu li { padding: 6px 0; }
+    ul.menu li.active { color: #00ba7c; font-weight: 700; }
+    .lead { font-size: 17px; color: #aab8c2; }
+  </style>
+
+  <script>
+    var clicks = 0;
+    var log = document.getElementById('event-log');
+    function writeLog(line) {
+      log.textContent += line + '\n';
+    }
+
+    document.getElementById('stat-nodes').textContent =
+      document.getElementsByTagName('*').length;
+
+    document.body.addEventListener('click', function () {
+      clicks++;
+      document.getElementById('stat-clicks').textContent = String(clicks);
+    });
+
+    document.getElementById('btn-ping').addEventListener('click', function () {
+      writeLog('ping @ ' + Date.now());
+    });
+
+    document.getElementById('btn-append').addEventListener('click', function () {
+      var p = document.createElement('p');
+      p.textContent = 'Dynamic paragraph ' + Math.floor(Math.random() * 1000);
+      document.getElementById('overview').appendChild(p);
+      writeLog('appendChild on #overview');
+    });
+
+    document.getElementById('login').addEventListener('submit', function (e) {
+      e.preventDefault();
+      writeLog('form submit: ' + document.getElementById('email').value);
+    });
+
+    setTimeout(function () {
+      writeLog('init timer OK');
+    }, 100);
+  </script>
+</body>
+</html>

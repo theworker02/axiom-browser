@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — Images</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    .grid { margin-top: 16px; }
+    figure { display: inline-block; vertical-align: top; margin: 12px; text-align: center; max-width: 180px; }
+    figcaption { font-size: 12px; color: #666; margin-top: 8px; }
+    img { border: 1px solid #ccc; background: #eee; }
+    img.block { display: block; width: 150px; height: 150px; object-fit: contain; }
+    .data-uri { width: 64px; height: 64px; }
+    .placeholder-note { font-size: 13px; color: #555; max-width: 480px; }
+  </style>
+</head>
+<body>
+  <h1>Images</h1>
+  <p>Local file, data URI, and network placeholder (async load when networking is wired).</p>
+
+  <div class="grid">
+    <figure>
+      <img class="block" src="assets/test.png" alt="1×1 local PNG" width="64" height="64">
+      <figcaption>Relative path <code>assets/test.png</code></figcaption>
+    </figure>
+
+    <figure>
+      <img class="data-uri block" alt="Data URI red pixel"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==">
+      <figcaption>Inline data URI (1×1 PNG)</figcaption>
+    </figure>
+
+    <figure>
+      <img class="block" src="https://via.placeholder.com/150.png" alt="Network placeholder" width="150" height="150">
+      <figcaption>HTTPS async (via.placeholder.com)</figcaption>
+    </figure>
+  </div>
+
+  <p class="placeholder-note">
+    Phase 2 Wave A decodes PNG/JPEG/GIF/WebP on a worker thread and invalidates paint when complete.
+    Until then you may see empty boxes or broken-image styling for remote URLs.
+  </p>
+</body>
+</html>

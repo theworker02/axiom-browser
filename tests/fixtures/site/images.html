@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Images</title>
+<script src="/js/setup.js"></script>
+</head>
+<body>
+<img id="ok" src="/img/ok.png">
+<img id="missing" src="/status/404/missing.png">
+<img id="broken" src="/img/broken.png">
+<img id="lazy" src="/img/lazy.png" loading="lazy">
+<img id="inline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==">
+<script>
+['ok', 'missing', 'broken', 'inline'].forEach(function (id) {
+  var el = document.getElementById(id);
+  el.addEventListener('load', function () { log.push(id + ':load'); });
+  el.addEventListener('error', function () { log.push(id + ':error'); });
+});
+</script>
+</body>
+</html>

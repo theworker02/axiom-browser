@@ -1,0 +1,9 @@
+[package]
+name = "axiom-events"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "DOM event model for Axiom"
+
+[dependencies]
+axiom-dom.workspace = true

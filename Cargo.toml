@@ -1,0 +1,117 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/axiom-url",
+    "crates/axiom-csp",
+    "crates/axiom-net",
+    "crates/axiom-html",
+    "crates/axiom-xml",
+    "crates/axiom-dom",
+    "crates/axiom-css",
+    "crates/axiom-style",
+    "crates/axiom-layout",
+    "crates/axiom-paint",
+    "crates/axiom-text",
+    "crates/axiom-gfx",
+    "crates/axiom-js",
+    "crates/axiom-web",
+    "crates/axiom-loader",
+    "crates/axiom-document",
+    "crates/axiom-events",
+    "crates/axiom-compositor",
+    "crates/axiom-trace",
+    "crates/axiom-engine",
+    "crates/axiom-browser",
+    "crates/axiom-download",
+    "browser/desktop",
+    "tools/test-runner",
+    "tools/compat",
+]
+exclude = [
+    "third_party/boa_ast",
+    "third_party/boa_engine",
+    "third_party/boa_gc",
+    "third_party/boa_parser",
+]
+default-members = ["browser/desktop"]
+
+[workspace.package]
+version = "1.2.8"
+edition = "2021"
+license = "MIT"
+authors = ["Axiom Contributors"]
+repository = "https://github.com/theworker02/axiom"
+
+[workspace.dependencies]
+axiom-url = { path = "crates/axiom-url" }
+axiom-csp = { path = "crates/axiom-csp" }
+axiom-net = { path = "crates/axiom-net" }
+axiom-html = { path = "crates/axiom-html" }
+axiom-xml = { path = "crates/axiom-xml" }
+axiom-dom = { path = "crates/axiom-dom" }
+axiom-css = { path = "crates/axiom-css" }
+axiom-style = { path = "crates/axiom-style" }
+axiom-layout = { path = "crates/axiom-layout" }
+axiom-paint = { path = "crates/axiom-paint" }
+axiom-text = { path = "crates/axiom-text" }
+axiom-gfx = { path = "crates/axiom-gfx" }
+axiom-js = { path = "crates/axiom-js" }
+axiom-web = { path = "crates/axiom-web" }
+axiom-loader = { path = "crates/axiom-loader" }
+axiom-document = { path = "crates/axiom-document" }
+axiom-events = { path = "crates/axiom-events" }
+axiom-compositor = { path = "crates/axiom-compositor" }
+axiom-trace = { path = "crates/axiom-trace" }
+axiom-engine = { path = "crates/axiom-engine" }
+axiom-browser = { path = "crates/axiom-browser" }
+axiom-download = { path = "crates/axiom-download" }
+
+thiserror = "2"
+anyhow = "1"
+log = "0.4"
+env_logger = "0.11"
+ureq = { version = "2.12", default-features = false, features = ["tls", "gzip"] }
+winit = "0.30"
+softbuffer = "0.4"
+fontdue = "0.9"
+rustybuzz = "0.20"
+unicode-bidi = "0.3"
+unicode-linebreak = "0.1"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "ico", "bmp"] }
+resvg = { version = "0.48", default-features = false, features = ["text", "system-fonts", "memmap-fonts", "svgz"] }
+boa_engine = "0.20"
+flate2 = "1"
+parking_lot = "0.12"
+crossbeam-channel = "0.5"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.32", features = ["bundled"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "http2", "stream"] }
+tokio = { version = "1", features = ["rt-multi-thread", "time", "sync", "macros"] }
+tokio-util = "0.7"
+brotli-decompressor = "5"
+brotli = "8"
+wuff = { version = "0.2.9", default-features = false, features = ["brotli"] }
+tower-layer = "0.3"
+tower-service = "0.3"
+bytes = "1"
+fs2 = "0.4"
+psl = "2"
+idna = "1"
+url = "2.5"
+
+# Boa 0.20.0 with engine, GC, parser and scope-analysis fixes; see AXIOM_PATCH.md in
+# each directory.
+[patch.crates-io]
+boa_ast = { path = "third_party/boa_ast" }
+boa_engine = { path = "third_party/boa_engine" }
+boa_gc = { path = "third_party/boa_gc" }
+boa_parser = { path = "third_party/boa_parser" }
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

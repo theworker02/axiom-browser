@@ -1,0 +1,14 @@
+[package]
+name = "axiom-test-runner"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Fixture test runner for Axiom"
+
+[[bin]]
+name = "axiom-test-runner"
+path = "src/main.rs"
+
+[dependencies]
+axiom-engine.workspace = true
+anyhow.workspace = true

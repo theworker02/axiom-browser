@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<title>Declarative shadow DOM</title>
+<style>
+  body { margin: 0; }
+  /* Document rules never reach into the shadow tree... */
+  .outer { background: #ff0000; }
+  /* ...but beat the shadow tree's ::slotted rules for slotted light children. */
+  #host > .light { height: 20px; background: #0000ff; }
+</style>
+<!-- 20px rows: green (shadow content), blue (slotted), cyan (slot fallback), then the
+     black box after the host. The light child no slot takes (magenta) never renders. -->
+<div id="host">
+  <template shadowrootmode="open">
+    <style>
+      :host { display: block; width: 100px; }
+      .outer { height: 20px; background: #008000; }
+      ::slotted(.light) { background: #ff0000; }
+    </style>
+    <div class="outer"></div>
+    <slot name="first"></slot>
+    <slot name="missing"><div style="height: 20px; background: #00ffff"></div></slot>
+  </template>
+  <div class="light" slot="first"></div>
+  <div style="height: 20px; background: #ff00ff"></div>
+</div>
+<div style="width: 100px; height: 20px; background: #000000"></div>

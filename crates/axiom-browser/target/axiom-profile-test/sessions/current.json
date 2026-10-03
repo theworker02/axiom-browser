@@ -1,0 +1,11 @@
+{
+  "profile_id": "cc2dcf7c-9e87-491b-b0b5-9ebbf443c0b6",
+  "tabs": [
+    {
+      "url": "axiom://newtab",
+      "title": "New Tab",
+      "pinned": false,
+      "active": true
+    }
+  ]
+}

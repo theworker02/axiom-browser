@@ -1,0 +1,23 @@
+[package]
+name = "axiom-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Desktop host for the Axiom browser engine"
+
+[[bin]]
+name = "axiom"
+path = "src/main.rs"
+
+[dependencies]
+axiom-engine.workspace = true
+axiom-browser.workspace = true
+axiom-gfx.workspace = true
+axiom-paint.workspace = true
+anyhow.workspace = true
+env_logger.workspace = true
+log.workspace = true
+url.workspace = true
+
+[build-dependencies]
+winres = "0.1"

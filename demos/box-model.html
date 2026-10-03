@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — Box Model</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: #fafafa; }
+    h1 { margin-bottom: 8px; }
+    .row { margin-bottom: 32px; }
+    .box {
+      background: #cce5ff;
+      border: 4px solid #0066cc;
+      padding: 16px;
+      margin: 12px;
+      width: 200px;
+    }
+    .box-auto {
+      background: #d4edda;
+      border: 2px solid #28a745;
+      padding: 12px;
+      margin: 24px auto;
+      width: 240px;
+    }
+    .nested-outer {
+      background: #fff3cd;
+      border: 3px solid #ffc107;
+      padding: 20px;
+      margin: 8px;
+    }
+    .nested-inner {
+      background: #ffffff;
+      border: 1px solid #999;
+      padding: 12px;
+      margin: 16px;
+    }
+    .inline-block-demo span {
+      display: inline-block;
+      background: #e2d5f5;
+      border: 2px solid #6f42c1;
+      padding: 8px 12px;
+      margin: 4px;
+    }
+    label { display: block; font-size: 14px; color: #555; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>CSS Box Model</h1>
+  <p>Margin, border, padding, and content boxes — block and inline-block.</p>
+
+  <div class="row">
+    <label>Fixed width + margin + border + padding</label>
+    <div class="box">Content area 200px wide.</div>
+  </div>
+
+  <div class="row">
+    <label>Auto horizontal margins (centering)</label>
+    <div class="box-auto">Centered block with auto margins.</div>
+  </div>
+
+  <div class="row">
+    <label>Nested boxes</label>
+    <div class="nested-outer">
+      Outer padding and border
+      <div class="nested-inner">Inner box with its own margin.</div>
+    </div>
+  </div>
+
+  <div class="row inline-block-demo">
+    <label>Inline-block siblings</label>
+    <span>One</span>
+    <span>Two</span>
+    <span>Three</span>
+  </div>
+</body>
+</html>

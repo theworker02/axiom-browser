@@ -1,0 +1,10 @@
+[package]
+name = "axiom-web"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Web API bindings stub for Axiom"
+
+[dependencies]
+axiom-js.workspace = true
+axiom-dom.workspace = true

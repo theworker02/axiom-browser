@@ -1,0 +1,13 @@
+[package]
+name = "axiom-js"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "JavaScript runtime abstraction for Axiom (Boa backend)"
+
+[dependencies]
+thiserror.workspace = true
+log.workspace = true
+boa_engine = { version = "0.20", features = ["annex-b"] }
+url.workspace = true
+getrandom = "0.3"

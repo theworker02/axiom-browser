@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — Forms</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; max-width: 420px; }
+    fieldset { border: 1px solid #ccc; padding: 16px; margin-bottom: 16px; }
+    legend { font-weight: 600; padding: 0 6px; }
+    label { display: block; margin: 12px 0 4px; font-size: 14px; }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      border: 1px solid #999;
+      font-size: 16px;
+    }
+    .row { margin: 8px 0; }
+    button, input[type="submit"] {
+      background: #0066cc;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+    #status { margin-top: 16px; padding: 12px; background: #f0f0f0; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>Forms</h1>
+  <p>Text, password, checkbox, radio, and submit — focus and caret in Wave A.</p>
+
+  <form id="demo-form" action="#" method="get">
+    <fieldset>
+      <legend>Sign in</legend>
+      <label for="user">Username</label>
+      <input type="text" id="user" name="user" placeholder="axiom" autocomplete="username">
+
+      <label for="pass">Password</label>
+      <input type="password" id="pass" name="pass" placeholder="••••••••" autocomplete="current-password">
+
+      <div class="row">
+        <label><input type="checkbox" name="remember" value="1"> Remember me</label>
+      </div>
+
+      <div class="row">
+        <strong>Plan</strong><br>
+        <label><input type="radio" name="plan" value="free" checked> Free</label><br>
+        <label><input type="radio" name="plan" value="pro"> Pro</label>
+      </div>
+
+      <input type="submit" value="Submit">
+    </fieldset>
+  </form>
+
+  <div id="status">Submit to exercise default action (when JS/events are enabled).</div>
+
+  <script>
+    document.getElementById('demo-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var user = document.getElementById('user').value;
+      document.getElementById('status').textContent = 'Would submit as: ' + user;
+    });
+  </script>
+</body>
+</html>

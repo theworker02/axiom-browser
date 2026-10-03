@@ -1,0 +1,24 @@
+[package]
+name = "axiom-compat"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Conformance harness for Axiom: html5lib, WPT testharness.js, reftests and crashtests with an expectations ratchet"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "axiom-compat"
+path = "src/main.rs"
+
+[dependencies]
+axiom-html.workspace = true
+axiom-dom.workspace = true
+axiom-engine.workspace = true
+axiom-net.workspace = true
+axiom-paint.workspace = true
+image.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title>Generated content</title>
+<style>
+  body { margin: 0; }
+  .float { float: left; width: 20px; height: 30px; background: blue; }
+  .wrap::after { content: ""; display: table; clear: both; }
+  .next { height: 10px; background: lime; }
+  .icon::before { content: ""; display: block; width: 10px; height: 10px; background: red; }
+  .icon:after { content: ""; display: block; width: 10px; height: 10px; margin-left: 20px; background: green; }
+  .none::before { content: none; display: block; height: 10px; background: black; }
+  .normal::after { display: block; height: 10px; background: black; }
+</style>
+</head>
+<body>
+<div class="wrap"><div class="float"></div></div>
+<div class="next"></div>
+<div class="icon"></div>
+<div class="none normal"></div>
+</body>
+</html>

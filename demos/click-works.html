@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Axiom — click works</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; background: #f7f7f7; }
+    #message { font-size: 24px; color: #333; margin: 20px 0; }
+    #button {
+      display: block;
+      width: 160px;
+      padding: 12px;
+      font-size: 16px;
+      background: #2a6aff;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Interactive milestone</h1>
+  <p id="message">Waiting for click…</p>
+  <button type="button" id="button">Click me</button>
+  <script>
+    const button = document.querySelector("#button");
+    button.addEventListener("click", () => {
+      document.querySelector("#message").textContent = "It works!";
+    });
+  </script>
+</body>
+</html>

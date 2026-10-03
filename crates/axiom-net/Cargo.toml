@@ -1,0 +1,39 @@
+[package]
+name = "axiom-net"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Networking for the Axiom browser engine"
+
+[dependencies]
+axiom-url.workspace = true
+thiserror.workspace = true
+log.workspace = true
+parking_lot.workspace = true
+crossbeam-channel.workspace = true
+reqwest.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+bytes.workspace = true
+flate2.workspace = true
+brotli-decompressor.workspace = true
+tower-layer.workspace = true
+tower-service.workspace = true
+futures-util = { version = "0.3", default-features = false }
+# Only used to recognise TLS failures in the transport's error chain.
+rustls = { version = "0.23", default-features = false, features = ["std"] }
+# Display metadata for the validated server certificate (validation stays in rustls).
+x509-parser = "0.16"
+ring = "0.17"
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+brotli.workspace = true
+hyper = { version = "1", features = ["server", "http1", "http2"] }
+hyper-util = { version = "0.1", features = ["tokio"] }
+http-body-util = "0.1"
+tokio = { version = "1", features = ["rt-multi-thread", "net", "io-util", "macros", "time"] }
+tokio-rustls = { version = "0.26", default-features = false, features = ["ring", "tls12", "logging"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+rcgen = { version = "0.13", default-features = false, features = ["crypto", "ring", "pem"] }

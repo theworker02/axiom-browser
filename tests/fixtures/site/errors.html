@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Script errors</title>
+<script src="/js/setup.js"></script>
+<script src="/js/boom.js"></script>
+<script>log.push('after-boom');</script>
+<script>notDefinedAnywhere();</script>
+<script>document.write('<p id="written">written</p>'); log.push('written:' + (document.getElementById('written') !== null));</script>
+<script type="module" src="/js/module.js"></script>
+</head>
+<body>
+<p>errors</p>
+</body>
+</html>

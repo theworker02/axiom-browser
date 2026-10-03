@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — Selectors</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    #hero { background: #1a1a2e; color: #eee; padding: 16px; }
+    .card { border: 1px solid #ccc; padding: 12px; margin: 8px 0; }
+    .card.highlight { background: #fff8e1; border-color: #ffb300; }
+    ul.menu li { list-style: none; padding: 6px 0; }
+    ul.menu li.active { font-weight: 700; color: #0066cc; }
+    div.container p { color: #333; }
+    div.container > p.direct { color: #c62828; }
+    a[href="#"] { color: #0066cc; }
+    .pseudo-demo p:first-child { border-left: 4px solid #4caf50; padding-left: 8px; }
+  </style>
+</head>
+<body>
+  <h1 id="page-title">Selectors</h1>
+  <div id="hero">ID selector (#hero)</div>
+
+  <div class="card">Class selector (.card)</div>
+  <div class="card highlight">Multiple classes (.card.highlight)</div>
+
+  <ul class="menu">
+    <li>Item</li>
+    <li class="active">Active item (.active)</li>
+    <li>Item</li>
+  </ul>
+
+  <div class="container">
+    <p class="direct">Child combinator (div.container &gt; p.direct)</p>
+    <div><p>Descendant only (gray, not red)</p></div>
+  </div>
+
+  <p><a href="#">Attribute selector a[href="#"]</a></p>
+
+  <div class="pseudo-demo">
+    <p>First paragraph in group (pseudo styling)</p>
+    <p>Second paragraph</p>
+  </div>
+</body>
+</html>

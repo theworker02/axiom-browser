@@ -1,0 +1,15 @@
+[package]
+name = "axiom-gfx"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Windowing and framebuffer present for Axiom"
+
+[dependencies]
+winit.workspace = true
+softbuffer.workspace = true
+thiserror.workspace = true
+log.workspace = true
+axiom-engine.workspace = true
+axiom-paint.workspace = true
+axiom-browser.workspace = true

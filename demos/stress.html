@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — Stress</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; font-size: 14px; }
+    h1 { font-size: 20px; }
+    .meta { color: #666; margin-bottom: 16px; }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 900px;
+    }
+    .cell {
+      width: 80px;
+      height: 48px;
+      margin: 2px;
+      padding: 4px;
+      border: 1px solid #999;
+      font-size: 11px;
+      overflow: hidden;
+    }
+    .cell:nth-child(5n) { background: #e3f2fd; }
+    .cell:nth-child(5n+1) { background: #f3e5f5; }
+    .cell:nth-child(5n+2) { background: #e8f5e9; }
+    .cell:nth-child(5n+3) { background: #fff8e1; }
+    .cell:nth-child(5n+4) { background: #fce4ec; }
+  </style>
+</head>
+<body>
+  <h1>Stress layout</h1>
+  <p class="meta">Many small boxes + nested text — useful for timing layout and paint.</p>
+  <div class="grid" id="grid"></div>
+  <script>
+    var grid = document.getElementById('grid');
+    for (var i = 0; i < 120; i++) {
+      var d = document.createElement('div');
+      d.className = 'cell';
+      d.textContent = '#' + i;
+      grid.appendChild(d);
+    }
+  </script>
+</body>
+</html>

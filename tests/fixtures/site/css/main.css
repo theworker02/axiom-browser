@@ -1,0 +1,5 @@
+@import url("parts/child.css");
+@font-face { font-family: "Fixture Sans"; src: url("../fonts/fixture.woff2") format("woff2"), url("../fonts/fixture.ttf") format("truetype"); }
+@font-face { font-family: "Unused Face"; src: url("../fonts/unused.woff2") format("woff2"); }
+body { font-family: "Fixture Sans", sans-serif; }
+#styled { color: rgb(1, 2, 3); }

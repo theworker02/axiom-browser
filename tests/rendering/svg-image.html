@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+<title>SVG images</title>
+<style>
+  body { margin: 0; background: white; }
+  img { display: block; }
+</style>
+</head>
+<body>
+<!-- 100x40 from its width/height attributes: red left half, blue right half. -->
+<img src="svg-image/declared.svg">
+<!-- viewBox only (1:1), sized by CSS width: a 50x50 green square. -->
+<img src="svg-image/viewbox.svg" style="width: 50px">
+<!-- Inline data: URL, 2:1 viewBox, sized by CSS height: 40x20 of yellow. -->
+<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 10'%3E%3Crect width='20' height='10' fill='%23ffff00'/%3E%3C/svg%3E" style="height: 20px">
+<!-- References an external raster; the SVG renders without ever fetching it. -->
+<img src="svg-image/external-ref.svg">
+</body>
+</html>

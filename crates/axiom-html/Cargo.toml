@@ -1,0 +1,10 @@
+[package]
+name = "axiom-html"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "HTML parser for the Axiom browser engine"
+
+[dependencies]
+axiom-dom.workspace = true
+thiserror.workspace = true

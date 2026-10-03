@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — Events</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    #pad {
+      width: 320px;
+      height: 180px;
+      background: #e8f5e9;
+      border: 2px solid #4caf50;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+    #pad.active { background: #c8e6c9; }
+    #log {
+      margin-top: 16px;
+      padding: 12px;
+      background: #263238;
+      color: #aed581;
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      min-height: 120px;
+      max-width: 480px;
+      white-space: pre-wrap;
+    }
+    button { padding: 8px 16px; margin-right: 8px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1>DOM Events</h1>
+  <p>Click, keyboard focus, and bubbling (capture → target → bubble).</p>
+
+  <div id="outer">
+    <div id="pad">Click me</div>
+  </div>
+
+  <button type="button" id="clear">Clear log</button>
+  <button type="button" id="focus-btn">Focus pad</button>
+
+  <div id="log"></div>
+
+  <script>
+    var logEl = document.getElementById('log');
+    function log(msg) {
+      logEl.textContent += msg + '\n';
+    }
+    var pad = document.getElementById('pad');
+    var outer = document.getElementById('outer');
+
+    outer.addEventListener('click', function () { log('[outer bubble] click'); });
+    outer.addEventListener('click', function () { log('[outer capture] click'); }, true);
+
+    pad.addEventListener('click', function (e) {
+      pad.classList.toggle('active');
+      log('[pad] click at (' + e.clientX + ', ' + e.clientY + ')');
+    });
+
+    pad.addEventListener('keydown', function (e) {
+      log('[pad] keydown: ' + e.key);
+    });
+    pad.setAttribute('tabindex', '0');
+
+    document.getElementById('clear').addEventListener('click', function () {
+      logEl.textContent = '';
+    });
+    document.getElementById('focus-btn').addEventListener('click', function () {
+      pad.focus();
+      log('[ui] focus pad');
+    });
+  </script>
+</body>
+</html>

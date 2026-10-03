@@ -1,0 +1,2 @@
+# Vendored test data must stay byte-exact (CR/LF are significant in parser tests).
+* -text

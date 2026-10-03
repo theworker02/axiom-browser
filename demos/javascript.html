@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Axiom Demo — JavaScript</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    #app { border: 1px solid #ccc; padding: 16px; max-width: 400px; }
+    button { margin: 4px 8px 4px 0; padding: 8px 14px; }
+    #out { margin-top: 12px; font-family: ui-monospace, monospace; background: #f5f5f5; padding: 12px; min-height: 2em; }
+  </style>
+</head>
+<body>
+  <h1>JavaScript (DOM APIs)</h1>
+  <p>Uses getElementById, textContent, addEventListener, createElement, appendChild, setTimeout.</p>
+
+  <div id="app">
+    <p id="message">Initial message</p>
+    <div id="list"></div>
+    <button type="button" id="add">Add item</button>
+    <button type="button" id="tick">Delayed update</button>
+  </div>
+  <div id="out">Ready.</div>
+
+  <script>
+    var count = 0;
+    var message = document.getElementById('message');
+    var list = document.getElementById('list');
+    var out = document.getElementById('out');
+
+    document.getElementById('add').addEventListener('click', function () {
+      count += 1;
+      message.textContent = 'Items: ' + count;
+      var li = document.createElement('div');
+      li.textContent = 'Item #' + count;
+      list.appendChild(li);
+      out.textContent = 'Appended via createElement/appendChild.';
+    });
+
+    document.getElementById('tick').addEventListener('click', function () {
+      out.textContent = 'Waiting 500ms…';
+      setTimeout(function () {
+        out.textContent = 'setTimeout fired at ' + new Date().toISOString();
+        message.textContent = 'Timer updated the heading.';
+      }, 500);
+    });
+  </script>
+</body>
+</html>
