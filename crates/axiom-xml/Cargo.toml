@@ -7,3 +7,4 @@ description = "XML parser (DOMParser, XMLHttpRequest responseXML) for the Axiom 
 
 [dependencies]
 axiom-dom.workspace = true
+axiom-html.workspace = true

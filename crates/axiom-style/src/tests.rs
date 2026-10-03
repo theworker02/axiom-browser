@@ -96,6 +96,12 @@ fn media_and_supports_rules() {
 }
 
 #[test]
+fn display_math_falls_back_to_flow_with_its_outer_display() {
+    assert_eq!(parse_display("math"), Some(Display::Inline));
+    assert_eq!(parse_display("block math"), Some(Display::Block));
+}
+
+#[test]
 fn shorthands_expand() {
     let (doc, s) = styled(
         r#"<style>

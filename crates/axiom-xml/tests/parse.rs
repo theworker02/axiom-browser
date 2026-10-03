@@ -90,6 +90,18 @@ fn resolves_namespaces_and_keeps_case() {
 }
 
 #[test]
+fn xhtml_external_subset_resolves_vendored_named_entities_without_network_io() {
+    let doc = parse(
+        "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' \
+         'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>\
+         <html xmlns='http://www.w3.org/1999/xhtml'><body>&nbsp;&copy;</body></html>",
+    )
+    .expect("recognised XHTML names resolve locally");
+    assert_eq!(doc.text_content(root_element(&doc)), "\u{a0}\u{a9}");
+    assert!(parse("<root>&nbsp;</root>").is_err());
+}
+
+#[test]
 fn nesting_depth_is_not_limited_by_the_stack() {
     let depth = 100_000;
     let xml = format!("{}{}", "<a>".repeat(depth), "</a>".repeat(depth));

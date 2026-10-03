@@ -19,6 +19,20 @@ mod tree_builder;
 
 pub use serialize::{serialize_children, serialize_outer};
 
+/// Resolves one semicolon-terminated named character reference from the WHATWG
+/// catalogue. XML itself only has five predefined entities, but XHTML documents
+/// that declare an XHTML external subset conventionally use this catalogue without
+/// fetching the external DTD.
+pub fn named_character_reference(name: &str) -> Option<&'static str> {
+    let mut terminated = String::with_capacity(name.len() + 1);
+    terminated.push_str(name);
+    terminated.push(';');
+    entities::ENTITIES
+        .binary_search_by(|(candidate, _)| candidate.cmp(&terminated.as_str()))
+        .ok()
+        .map(|index| entities::ENTITIES[index].1)
+}
+
 use axiom_dom::{Document, Namespace, NodeId};
 
 use tokenizer::{Token, Tokenizer};

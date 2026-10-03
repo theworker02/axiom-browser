@@ -5,8 +5,10 @@
 //! turns them into the `parsererror` document the DOM Parsing spec describes.
 //!
 //! Not supported: DTD declarations beyond skipping the internal subset (so only the five
-//! predefined entities and character references resolve), external entities (never
-//! fetched, by design) and XML 1.1. CDATA sections become text.
+//! predefined entities and character references resolve), arbitrary external entities
+//! (never fetched, by design) and XML 1.1. XHTML documents that declare a recognised
+//! XHTML external subset additionally use Axiom's vendored named-character catalogue;
+//! no network DTD fetch is performed. CDATA sections become text.
 
 use std::fmt;
 
@@ -82,6 +84,14 @@ fn is_space(c: char) -> bool {
     matches!(c, ' ' | '\t' | '\n' | '\r')
 }
 
+/// XHTML's external DTDs define a fixed named-character set. We recognise only
+/// canonical XHTML identifiers and resolve the names locally; arbitrary XML external
+/// subsets remain unavailable and are never fetched.
+fn is_xhtml_external_subset(public_id: &str, system_id: &str) -> bool {
+    public_id.to_ascii_lowercase().contains("//dtd xhtml ")
+        || system_id.to_ascii_lowercase().contains("/tr/xhtml")
+}
+
 fn is_name_start(c: char) -> bool {
     matches!(c,
         ':' | 'A'..='Z' | '_' | 'a'..='z' | '\u{C0}'..='\u{D6}' | '\u{D8}'..='\u{F6}'
@@ -113,6 +123,10 @@ struct Parser {
     /// Per open element, the length of `declarations` before its own.
     scopes: Vec<usize>,
     text: String,
+    /// A recognised XHTML external subset makes the XHTML named character catalogue
+    /// available without permitting general external-entity resolution or a network
+    /// fetch. Ordinary XML documents remain restricted to XML's five predefined names.
+    xhtml_entities: bool,
 }
 
 impl Parser {
@@ -131,6 +145,7 @@ impl Parser {
             declarations: Vec::new(),
             scopes: Vec::new(),
             text: String::new(),
+            xhtml_entities: false,
         }
     }
 
@@ -332,6 +347,7 @@ impl Parser {
             self.skip_space();
             system_id = self.quoted()?;
         }
+        self.xhtml_entities = is_xhtml_external_subset(&public_id, &system_id);
         self.skip_space();
         if self.eat("[") {
             self.skip_internal_subset()?;
@@ -486,6 +502,8 @@ impl Parser {
             "amp" => "&",
             "apos" => "'",
             "quot" => "\"",
+            _ if self.xhtml_entities => axiom_html::named_character_reference(&name)
+                .ok_or_else(|| self.error(format!("entity '{name}' is not defined")))?,
             _ => return Err(self.error(format!("entity '{name}' is not defined"))),
         }
         .to_string())

@@ -78,6 +78,11 @@ Reftests per directory:
 | `css/css-display` | 23 / 80 |
 | `css/css-display/run-in` | 39 / 133 |
 
+The checked-in reftest baseline was refreshed on 2026-10-03 after a verified XHTML
+entity-resolution repair and the CSS `display: block math` correction. It now records
+**898 / 1034** matching reftests. The prior table remains the 2026-09-28 historical
+snapshot; rerun `axiom-compat reftests` for the exact current per-directory breakdown.
+
 Per-file tables print on every run; `--json` writes every outcome.
 
 ### What changed with the tree builder

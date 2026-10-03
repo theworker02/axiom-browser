@@ -2453,7 +2453,7 @@ fn parse_display(v: &str) -> Option<Display> {
     Some(match v {
         "none" => Display::None,
         "contents" => Display::Contents,
-        "block" | "block flow" | "run-in" => Display::Block,
+        "block" | "block flow" | "run-in" | "block math" => Display::Block,
         "inline" | "inline flow" | "ruby" | "ruby-text" | "ruby-base" | "math" => Display::Inline,
         "inline-block" | "inline flow-root" | "-webkit-inline-box" | "-moz-inline-box" => {
             Display::InlineBlock

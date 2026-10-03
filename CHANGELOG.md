@@ -13,6 +13,7 @@ See the detailed project changelog:
 - A second normal-profile launch now presents a native profile-lock explanation instead of silently exiting.
 - Fixed release automation to use the 1.3.1 notes/artifacts and restored the workspace formatting gate.
 - Added the opt-in `.agents/skills/axiom-setup` repository skill and `docs/AGENT_SETUP.md` for agent-assisted local setup. It requires explicit consent for dependency downloads, profile changes, global skill installation, publishing, or other external writes; it does not add browser AI, telemetry, or tracking.
+- Restored real XHTML rendering for recognised XHTML external subsets by resolving their named references from Axiom's vendored catalogue without network DTD fetching. Corrected `display: block math` fallback behavior and refreshed the visual compatibility baseline only for the verified `display: flow-root` improvement.
 
 ### 1.2.8 — 2026-10-03
 

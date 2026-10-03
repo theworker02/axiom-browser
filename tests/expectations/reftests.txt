@@ -63,7 +63,6 @@ FAIL css/css-display/display-contents-text-inherit-002.html
 FAIL css/css-display/display-contents-text-inherit.html
 FAIL css/css-display/display-contents-unusual-html-elements-none.html
 FAIL css/css-display/display-first-line-002.html
-FAIL css/css-display/display-flow-root-001.html
 FAIL css/css-display/display-flow-root-list-item-001.html
 FAIL css/css-display/display-inline-dynamic-001.html
 FAIL css/css-display/run-in/counter-increment-applies-to-011.xht
