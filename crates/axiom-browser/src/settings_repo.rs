@@ -6,8 +6,8 @@ use serde_json::Value;
 
 use crate::search::{SearchProvider, SearchProviderService, CUSTOM, DEFAULT_PROVIDER_ID};
 
-/// v2 (Wave F): `search_provider_id`.
-pub const SETTINGS_SCHEMA_VERSION: i32 = 2;
+/// v3: browser-level appearance, privacy, download, language and accessibility preferences.
+pub const SETTINGS_SCHEMA_VERSION: i32 = 3;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
@@ -26,6 +26,28 @@ pub struct BrowserSettings {
     pub download_directory: String,
     pub performance_hud: bool,
     pub developer_features: bool,
+    pub default_zoom_percent: u16,
+    pub preferred_languages: Vec<String>,
+    pub reduced_motion: bool,
+    pub high_contrast: bool,
+    pub block_all_cookies: bool,
+    pub clear_cookies_on_exit: bool,
+    pub clear_history_on_exit: bool,
+    pub send_referrer: bool,
+    pub allow_insecure_content: bool,
+    pub safe_browsing: bool,
+    pub ask_download_location: bool,
+    pub open_downloads_when_complete: bool,
+    pub automatic_downloads: bool,
+    pub pdf_open_externally: bool,
+    pub spell_check: bool,
+    pub page_translation: bool,
+    pub hardware_acceleration: bool,
+    pub background_networking: bool,
+    pub site_notifications: String,
+    pub camera_permission: String,
+    pub microphone_permission: String,
+    pub location_permission: String,
 }
 
 impl Default for BrowserSettings {
@@ -43,6 +65,28 @@ impl Default for BrowserSettings {
             download_directory: String::new(),
             performance_hud: true,
             developer_features: false,
+            default_zoom_percent: 100,
+            preferred_languages: vec!["en-US".into(), "en".into()],
+            reduced_motion: false,
+            high_contrast: false,
+            block_all_cookies: false,
+            clear_cookies_on_exit: false,
+            clear_history_on_exit: false,
+            send_referrer: true,
+            allow_insecure_content: false,
+            safe_browsing: false,
+            ask_download_location: false,
+            open_downloads_when_complete: false,
+            automatic_downloads: false,
+            pdf_open_externally: false,
+            spell_check: false,
+            page_translation: false,
+            hardware_acceleration: false,
+            background_networking: true,
+            site_notifications: "block".into(),
+            camera_permission: "block".into(),
+            microphone_permission: "block".into(),
+            location_permission: "block".into(),
         }
     }
 }
@@ -54,6 +98,27 @@ impl BrowserSettings {
         }
         if self.new_tab_url.is_empty() {
             self.new_tab_url = "axiom://newtab".into();
+        }
+        self.default_zoom_percent = self.default_zoom_percent.clamp(25, 500);
+        self.preferred_languages.retain(|language| {
+            !language.is_empty()
+                && language.len() <= 35
+                && language
+                    .bytes()
+                    .all(|byte| byte.is_ascii_alphanumeric() || byte == b'-')
+        });
+        if self.preferred_languages.is_empty() {
+            self.preferred_languages.push("en-US".into());
+        }
+        for permission in [
+            &mut self.site_notifications,
+            &mut self.camera_permission,
+            &mut self.microphone_permission,
+            &mut self.location_permission,
+        ] {
+            if !matches!(permission.as_str(), "ask" | "allow" | "block") {
+                *permission = "block".into();
+            }
         }
         if self.schema_version > SETTINGS_SCHEMA_VERSION {
             // Newer unknown fields already ignored by serde; keep running.
@@ -77,6 +142,17 @@ impl BrowserSettings {
         }
         self.set_search_provider(service.default_provider());
         self.schema_version = SETTINGS_SCHEMA_VERSION;
+    }
+
+    /// A user-visible summary for the trusted settings UI; never include browsing data.
+    pub fn privacy_summary(&self) -> &'static str {
+        if self.block_all_cookies {
+            "Cookies blocked"
+        } else if self.clear_cookies_on_exit || self.clear_history_on_exit {
+            "Clear selected data on exit"
+        } else {
+            "Local profile defaults"
+        }
     }
 
     /// The providers this profile can choose from, with its selection applied.

@@ -38,7 +38,7 @@ impl InternalPageRegistry {
             ("axiom://network", "Network", "Network (loading…)"),
             ("axiom://document", "Document", "Document (loading…)"),
             ("axiom://downloads", "Downloads", "Downloads (coming soon)"),
-            ("axiom://version", "Version", "Axiom 1.2.8"),
+            ("axiom://version", "Version", "Axiom 1.3.0"),
             (
                 "axiom://performance",
                 "Performance",

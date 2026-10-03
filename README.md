@@ -7,7 +7,7 @@
 [![CI](https://img.shields.io/badge/CI-cargo%20test%20%2B%20clippy-0B7A75?style=for-the-badge&logo=rust&logoColor=white)](https://github.com/theworker02/axiom)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2F2F2F?style=for-the-badge)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-2021-dea584?style=for-the-badge&logo=rust&logoColor=black)](https://www.rust-lang.org/)
-[![Release](https://img.shields.io/badge/release-1.2.8-447AFF?style=for-the-badge)](docs/RELEASES/1.2.8.md)
+[![Release](https://img.shields.io/badge/release-1.3.0-447AFF?style=for-the-badge)](docs/RELEASES/1.3.0.md)
 [![Platform](https://img.shields.io/badge/platform-Windows%20x86__64-111827?style=for-the-badge&logo=windows&logoColor=white)](docs/ACQUISITION.md)
 [![Privacy](https://img.shields.io/badge/privacy-no%20telemetry%20%E2%80%A2%20no%20AI-0B7A75?style=for-the-badge)](docs/PRIVACY.md)
 [![Engine](https://img.shields.io/badge/Engine-independent-4A5568?style=for-the-badge)](docs/REALITY.md)

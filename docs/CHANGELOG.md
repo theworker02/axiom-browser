@@ -6,6 +6,17 @@ Format inspired by [Keep a Changelog](https://keepachangelog.com/). Axiom versio
 
 ## [Unreleased]
 
+## [1.3.0] — 2026-10-03
+
+### Added — Browser settings foundation
+
+- Versioned profile settings schema v3 with appearance, startup, privacy, cookie, download,
+  language, accessibility, permission, and system/developer preferences.
+- A category-based trusted `axiom://settings` dashboard informed by Chrome's current settings
+  taxonomy, without copying Chrome UI or claiming unimplemented features.
+- Explicit local-first defaults: no AI integration, telemetry, analytics, account requirement, or
+  private-data upload path.
+
 ## [1.2.8] — 2026-10-03
 
 ### Added — Compatibility milestone
