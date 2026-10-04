@@ -1,6 +1,6 @@
 # Acquiring Axiom
 
-This document explains how to obtain, build, run and verify the Axiom browser/engine. The 1.3.1
+This document explains how to obtain, build, run and verify the Axiom browser/engine. The 1.3.2
 release train produces a Windows x86_64 portable ZIP and a per-user NSIS installer in addition to
 the source distribution. Until Axiom has an Authenticode certificate, release executables are
 unsigned and must be verified against the GitHub release checksum.
@@ -28,8 +28,8 @@ cd axiom
 
 ## Windows release package
 
-Download the `Axiom-Setup-1.3.1.exe` installer (when available) or the portable
-`Axiom-1.3.1-windows-x86_64.zip` from the GitHub release. The installer writes only to
+Download the `Axiom-Setup-1.3.2.exe` installer (when available) or the portable
+`Axiom-1.3.2-windows-x86_64.zip` from the GitHub release. The installer writes only to
 `%LOCALAPPDATA%\Programs\Axiom`, creates Start Menu/Desktop shortcuts, and can be removed from
 Windows Apps or `Uninstall.exe`. It does not install a service, browser extension, or updater.
 

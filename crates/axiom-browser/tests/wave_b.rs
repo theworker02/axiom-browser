@@ -55,6 +55,39 @@ fn omnibox_editing_and_escape() {
 }
 
 #[test]
+fn focus_space_shortcut_and_trusted_setting_action_work() {
+    let mut browser = Browser::new_private(800, 600).expect("profile");
+    assert!(browser.handle_chrome_key(" ", true, true, false));
+    assert_eq!(browser.window.tabs.active_tab().url(), "axiom://focus");
+
+    browser.navigate_resolved("axiom://settings?setting=performance_hud&value=true");
+    assert!(browser.settings.performance_hud);
+    assert!(browser.show_hud);
+    assert_eq!(browser.window.tabs.active_tab().url(), "axiom://settings");
+}
+
+#[test]
+fn focus_controls_persist_in_a_normal_profile() {
+    let root = tempfile::tempdir().expect("temporary profile root");
+    {
+        let mut browser =
+            Browser::new_normal(root.path().to_path_buf(), 800, 600).expect("normal profile");
+        browser
+            .set_boolean_setting("performance_hud", true)
+            .expect("persist hud preference");
+        browser
+            .set_boolean_setting("clear_cookies_on_exit", true)
+            .expect("persist cookie policy");
+    }
+
+    let reopened =
+        Browser::new_normal(root.path().to_path_buf(), 800, 600).expect("reopen normal profile");
+    assert!(reopened.settings.performance_hud);
+    assert!(reopened.show_hud);
+    assert!(reopened.settings.clear_cookies_on_exit);
+}
+
+#[test]
 fn suggestion_navigation() {
     let mut browser = Browser::new_private(800, 600).expect("profile");
     browser.focus_omnibox();

@@ -1,6 +1,25 @@
 # Changelog
 
+[1.3.2]: https://github.com/theworker02/axiom-browser/releases/tag/v1.3.2
 [1.3.1]: https://github.com/theworker02/axiom-browser/releases/tag/v1.3.1
+
+## [1.3.2] — 2026-10-04
+
+### Added
+
+- Focus Space (`axiom://focus`), a profile-local workspace overview with a visible native Orbit
+  Rail launcher and `Ctrl+Shift+Space` shortcut. It presents open/loading tabs and real local
+  bookmark, history and active-download counts without an account, telemetry or cloud sync.
+- Trusted Settings quick controls for performance HUD, session restoration, clear-history-on-exit
+  and clear-cookies-on-exit, plus regression coverage for trusted routing and profile persistence.
+- `docs/FOCUS_SPACE.md`, documenting the visual system, privacy boundary and scope.
+
+### Changed
+
+- The desktop host honors the persisted background-navigation preference rather than forcing it
+  on after startup.
+- Refreshed the WPT testharness expectation baseline following intentional XML/XHTML parser
+  improvements; the compatibility record reflects observed test outcomes.
 
 ## [1.3.1] — 2026-10-03
 

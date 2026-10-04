@@ -6,7 +6,7 @@ The optional `.agents/skills/axiom-setup` repository skill is a development/setu
 
 ## Product guarantees
 
-Axiom 1.3.1 has **no AI integration**, telemetry service, analytics SDK, advertising SDK,
+Axiom 1.3.2 has **no AI integration**, telemetry service, analytics SDK, advertising SDK,
 tracking beacon, account system, or automatic crash-report uploader. It does not send browser
 history, bookmarks, open tabs, profile metadata, cookies, Web Storage, downloads, or private-mode
 activity to an Axiom-operated service.

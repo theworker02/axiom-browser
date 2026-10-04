@@ -12,6 +12,13 @@ code{background:#e8ebf0;padding:2px 6px;border-radius:4px;word-break:break-all}\
 li{margin:8px 0}.current{font-weight:600}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}\
 .card{background:#fff;border:1px solid #d8dee9;border-radius:12px;padding:16px}.state{color:#0b7a4b;font-size:12px;font-weight:700}";
 
+fn toggle(key: &str, current: bool, label: &str) -> String {
+    let next = !current;
+    format!(
+        r#"<p><a class=\"control\" href=\"axiom://settings?setting={key}&value={next}\">{label}: {current} → {next}</a></p>"#
+    )
+}
+
 pub(crate) fn render_settings_page(
     settings: &BrowserSettings,
     search: &SearchProviderService,
@@ -37,6 +44,7 @@ pub(crate) fn render_settings_page(
 <section class="card"><h2>Permissions</h2><p>Notifications: <code>{notifications}</code><br>Camera: <code>{camera}</code><br>Microphone: <code>{microphone}</code><br>Location: <code>{location}</code></p><span class="state">DEFAULT POLICY</span></section>
 <section class="card"><h2>System & developer</h2><p>Background networking: <code>{background}</code><br>Hardware acceleration: <code>{hardware}</code><br>Performance HUD: <code>{hud}</code><br>Developer features: <code>{developer}</code></p><span class="state">PREFERENCES</span></section>
 </div>
+<h2>Quick controls</h2><div class="grid">{controls}</div>
 <p class="meta">Trusted internal page — axiom://settings</p></body></html>"#,
         engine = html_escape(&search.default_provider().name),
         homepage = html_escape(&settings.homepage),
@@ -72,6 +80,34 @@ pub(crate) fn render_settings_page(
         hardware = settings.hardware_acceleration,
         hud = settings.performance_hud,
         developer = settings.developer_features,
+        controls = [
+            toggle(
+                "performance_hud",
+                settings.performance_hud,
+                "Performance HUD"
+            ),
+            toggle(
+                "background_networking",
+                settings.background_networking,
+                "Background navigation"
+            ),
+            toggle(
+                "restore_previous_session",
+                settings.restore_previous_session,
+                "Restore previous session"
+            ),
+            toggle(
+                "clear_history_on_exit",
+                settings.clear_history_on_exit,
+                "Clear history on exit"
+            ),
+            toggle(
+                "clear_cookies_on_exit",
+                settings.clear_cookies_on_exit,
+                "Clear cookies on exit"
+            ),
+        ]
+        .join(""),
     )
 }
 

@@ -174,8 +174,9 @@ pub fn run_browser_context(ctx: BrowsingContext, initial_url: &str) -> Result<()
 /// Run the interactive multi-tab browser UI.
 pub fn run_browser(mut browser: Browser, initial_url: &str) -> Result<(), GfxError> {
     browser.set_viewport(1024, 768);
-    // Pages load while the event loop keeps painting; `Browser::tick` commits them.
-    browser.set_background_navigation(true);
+    // Pages load while the event loop keeps painting; the profile preference decides
+    // whether navigation is asynchronous. The default is enabled, but do not override
+    // an explicit choice from trusted settings.
     if !initial_url.is_empty() && initial_url != "axiom://newtab" {
         browser.navigate(initial_url);
     }
@@ -419,7 +420,8 @@ impl BrowserApp {
             return;
         }
         let state = self.browser.chrome_state();
-        // Back 8-44, Forward 52-88, Reload 96-132, Security 140-168, Omnibox 176..
+        // Back 8-44, Forward 52-88, Reload 96-132, Security 140-168, bookmark 172-200,
+        // omnibox 204..(width-56), Focus Space on the trailing orbit control.
         if (8.0..44.0).contains(&x) {
             if state.can_go_back {
                 self.browser.back();
@@ -434,6 +436,8 @@ impl BrowserApp {
             self.browser.toggle_site_info();
         } else if (168.0..196.0).contains(&x) {
             self.browser.toggle_bookmark();
+        } else if x >= self.surface_width.saturating_sub(48) as f32 {
+            self.browser.open_focus_space();
         } else if x >= 204.0 {
             self.browser.focus_omnibox();
         }
@@ -570,7 +574,9 @@ impl BrowserApp {
 
         // Omnibox
         let omni_x = 204u32;
-        let omni_w = w.saturating_sub(omni_x + 12);
+        // Keep the circular Focus Space launcher outside the omnibox. It makes the
+        // local workspace a first-class destination rather than another hidden menu.
+        let omni_w = w.saturating_sub(omni_x + 56);
         let omni_focused = state.focused_control == ChromeControl::Omnibox;
         fill(
             &mut fb,
@@ -608,10 +614,15 @@ impl BrowserApp {
             fill(&mut fb, cx, TAB_STRIP_H + 12, 2, 20, 0xff_1c1f26);
         }
 
+        let focus_x = w.saturating_sub(44);
+        fill(&mut fb, focus_x, TAB_STRIP_H + 8, 32, 28, 0xff_6d4bc3);
+        fill(&mut fb, focus_x + 5, TAB_STRIP_H + 13, 22, 18, 0xff_9b7bf0);
+        blit_text_approx(&mut fb, focus_x + 13, TAB_STRIP_H + 18, "O", 0xff_ffffff);
+
         if state.private {
             blit_text_approx(
                 &mut fb,
-                w.saturating_sub(72),
+                w.saturating_sub(116),
                 TAB_STRIP_H + 14,
                 "PRIVATE",
                 0xff_5b2d8e,

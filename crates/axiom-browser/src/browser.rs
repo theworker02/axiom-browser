@@ -62,6 +62,16 @@ pub struct Browser {
 
 impl Drop for Browser {
     fn drop(&mut self) {
+        // Exit-cleanup is a profile-owned policy. Private profiles are already in-memory,
+        // so only durable profiles need repository mutations here.
+        if !self.is_private() {
+            if self.settings.clear_history_on_exit {
+                let _ = self.profile.store.clear_history();
+            }
+            if self.settings.clear_cookies_on_exit {
+                let _ = self.profile.store.clear_cookies();
+            }
+        }
         // Downloads first (they run on the scheduler; a private profile forgets them and
         // deletes partial files), then workers before the service so no request outlives
         // the profile; a private profile's cache is cleared by the service shutdown.
@@ -147,6 +157,7 @@ impl Browser {
         };
         let search = settings.search_service();
         let show_hud = settings.performance_hud;
+        let background_navigation = settings.background_networking;
         let cookie_jar = ProfileCookieJar::new(Arc::clone(&profile.store));
         let storage_profile = ProfileStorage::new(Arc::clone(&profile.store));
         let (network, scheduler) = profile_network(&profile, Arc::clone(&cookie_jar));
@@ -170,7 +181,10 @@ impl Browser {
             internals: InternalPageRegistry::new(),
             show_hud,
             settings,
-            background_navigation: false,
+            // Apply the persisted preference before tabs are wired to the scheduler.
+            // Desktop mode defaults to asynchronous navigation; deterministic tools can
+            // deliberately opt out.
+            background_navigation,
             last_session_write: Instant::now()
                 .checked_sub(Duration::from_secs(60))
                 .unwrap_or_else(Instant::now),
@@ -231,6 +245,31 @@ impl Browser {
 
     pub fn background_navigation(&self) -> bool {
         self.background_navigation
+    }
+
+    /// Apply one trusted settings action. Web pages cannot navigate to `axiom://settings`,
+    /// so this is deliberately the only mutation surface for the internal dashboard.
+    pub fn set_boolean_setting(&mut self, key: &str, value: bool) -> Result<(), &'static str> {
+        match key {
+            "performance_hud" => {
+                self.settings.performance_hud = value;
+                self.show_hud = value;
+            }
+            "background_networking" => {
+                self.settings.background_networking = value;
+                self.set_background_navigation(value);
+            }
+            "restore_previous_session" => self.settings.restore_previous_session = value,
+            "clear_history_on_exit" => self.settings.clear_history_on_exit = value,
+            "clear_cookies_on_exit" => self.settings.clear_cookies_on_exit = value,
+            _ => return Err("unknown boolean setting"),
+        }
+        self.profile
+            .store
+            .save_settings(&self.settings)
+            .map_err(|_| "could not persist setting")?;
+        self.refresh_internal_pages();
+        Ok(())
     }
 
     /// Select the default search provider by id and persist it in this profile.
@@ -574,6 +613,25 @@ impl Browser {
                     html: render_search_settings_page(&self.search, self.is_private()),
                 })
             }
+            "axiom://settings" => {
+                if let (Some(key), Some(value)) =
+                    (query_param(url, "setting"), query_param(url, "value"))
+                {
+                    let value = match value.as_str() {
+                        "true" => true,
+                        "false" => false,
+                        _ => return None,
+                    };
+                    if let Err(error) = self.set_boolean_setting(&key, value) {
+                        log::warn!(target: "axiom_settings", "settings action rejected: {error}");
+                    }
+                }
+                Some(crate::internal::InternalPage {
+                    url: "axiom://settings".into(),
+                    title: "Settings".into(),
+                    html: render_settings_page(&self.settings, &self.search, self.is_private()),
+                })
+            }
             _ => None,
         }
     }
@@ -689,6 +747,12 @@ impl Browser {
         let url = self.window.tabs.active_tab().url();
         self.chrome.focus_omnibox(&url);
         self.refresh_suggestions();
+    }
+
+    /// Open the profile-local workspace from trusted chrome or an internal page.
+    /// Ordinary websites cannot invoke this privileged navigation path.
+    pub fn open_focus_space(&mut self) {
+        self.navigate_internal("axiom://focus");
     }
 
     pub fn refresh_suggestions(&mut self) {
@@ -901,6 +965,7 @@ impl Browser {
         let network_html = render_network_page(self);
         let downloads_html = render_downloads_page(&self.downloads.list(), self.is_private());
         let document_html = render_document_page(&self.window.tabs.active_tab().context);
+        let focus_html = render_focus_page(self);
         self.internals
             .insert_dynamic("axiom://document", "Document", document_html);
         self.internals
@@ -918,6 +983,8 @@ impl Browser {
         let settings_html = render_settings_page(&self.settings, &self.search, self.is_private());
         self.internals
             .insert_dynamic("axiom://settings", "Settings", settings_html);
+        self.internals
+            .insert_dynamic("axiom://focus", "Focus Space", focus_html);
     }
 
     pub fn debug_profile_info(&self) -> String {
@@ -958,6 +1025,10 @@ impl Browser {
                 }
                 "d" | "D" => {
                     self.toggle_bookmark();
+                    return true;
+                }
+                " " if shift => {
+                    self.open_focus_space();
                     return true;
                 }
                 "a" | "A" if self.chrome.omnibox.editing => {
@@ -1061,6 +1132,53 @@ impl Browser {
             _ => false,
         }
     }
+}
+
+/// A profile-local workspace view. It deliberately derives its data from the active
+/// browser model and never uploads tab, history, cookie, or activity information.
+fn render_focus_page(browser: &Browser) -> String {
+    let tabs = browser.window.tabs.tabs();
+    let active = browser.window.tabs.active_index();
+    let loading = tabs.iter().filter(|tab| tab.is_loading()).count();
+    let bookmarks = browser.profile.store.bookmark_count().unwrap_or(0);
+    let history = browser.profile.store.history_count().unwrap_or(0);
+    let downloading = browser
+        .downloads
+        .list()
+        .iter()
+        .filter(|download| matches!(download.state, axiom_download::DownloadState::Downloading))
+        .count();
+    let mut cards = String::new();
+    for (index, tab) in tabs.iter().enumerate() {
+        let marker = if index == active { "ACTIVE" } else { "OPEN" };
+        let active_class = if index == active { " active" } else { "" };
+        cards.push_str(&format!(
+            "<article class=\"tab{active_class}\"><span>{marker}</span><h2>{}</h2><p>{}</p></article>",
+            html_escape(&tab.title()),
+            html_escape(&tab.url()),
+        ));
+    }
+    let mode = if browser.is_private() {
+        "Private / memory-only"
+    } else {
+        "Persistent / local-only"
+    };
+    format!(
+        r#"<!doctype html><html><head><title>Focus Space</title><style>
+body{{font-family:system-ui,sans-serif;margin:0;padding:44px;color:#eef3ff;background:#0b1220;max-width:1160px}}
+h1{{font-size:40px;line-height:1.05;margin:5px 0 12px;max-width:760px}} h2{{font-size:17px;margin:10px 0}} p{{line-height:1.55}} a{{color:#dbeafe}} .meta{{color:#c9d7ff}} .eyebrow{{letter-spacing:2px;font-size:12px;font-weight:800;color:#9fd7ff}}
+.actions{{margin-top:24px}} .action{{margin-right:14px;color:#9fd7ff;font-weight:700}}
+.stats{{margin-top:22px}} .grid{{margin-top:22px}}
+.stat{{margin-bottom:10px;border:1px solid #334b70;border-radius:14px;padding:13px;background-color:#121d31}} .tab{{margin-bottom:14px;border:1px solid #334b70;border-radius:18px;padding:16px;background-color:#121d31}}
+.stat strong{{display:block;font-size:27px;color:#b8e7ff}} .stat span{{font-size:11px;color:#8ab4ff;font-weight:800;letter-spacing:1px}} .tab span{{font-size:11px;color:#8ab4ff;font-weight:800;letter-spacing:1px}} .section-title{{margin:32px 0 2px;font-size:22px}}
+.tab{{min-height:120px}} .tab.active{{background-color:#2a406d;border-color:#8ab4ff}} .tab h2{{font-size:18px;margin:10px 0}} .tab p{{color:#b8c2d9;word-break:break-all;font-size:13px}}
+</style></head><body><section class=\"hero\"><p class=\"eyebrow\">AXIOM FOCUS SPACE</p><h1>Your browsing, arranged as a calm local workspace.</h1><p>{mode} · {count} open tabs · no telemetry, no AI, no cloud sync.</p><p class=\"actions\"><a class=\"action\" href=\"axiom://newtab\">New tab</a> · <a class=\"action\" href=\"axiom://settings\">Settings</a> · <a class=\"action\" href=\"axiom://network\">Network</a> · <a class=\"action\" href=\"axiom://downloads\">Downloads</a></p></section><main class=\"stats\"><p class=\"stat\"><strong>{count}</strong><br>OPEN TABS</p><p class=\"stat\"><strong>{loading}</strong><br>LOADING NOW</p><p class=\"stat\"><strong>{bookmarks}</strong><br>SAVED BOOKMARKS</p><p class=\"stat\"><strong>{history}</strong><br>LOCAL VISITS</p><p class=\"stat\"><strong>{downloading}</strong><br>ACTIVE DOWNLOADS</p></main><h2 class=\"section-title\">Open workspace</h2><main class=\"grid\">{cards}</main><p class=\"meta\">Trusted internal page — axiom://focus. This view is calculated locally from the current profile and never uploads activity.</p></body></html>"#,
+        count = tabs.len(),
+        loading = loading,
+        bookmarks = bookmarks,
+        history = history,
+        downloading = downloading,
+    )
 }
 
 fn render_history_page(entries: &[crate::history_repo::HistoryRecord], private: bool) -> String {

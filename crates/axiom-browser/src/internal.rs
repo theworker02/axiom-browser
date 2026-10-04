@@ -33,12 +33,13 @@ impl InternalPageRegistry {
         // Extensible placeholders for later waves
         for (url, title, body) in [
             ("axiom://settings", "Settings", "Settings (coming soon)"),
+            ("axiom://focus", "Focus Space", "Focus Space (loading… )"),
             ("axiom://history", "History", "History (coming soon)"),
             ("axiom://cookies", "Cookies", "Cookies (loading…)"),
             ("axiom://network", "Network", "Network (loading…)"),
             ("axiom://document", "Document", "Document (loading…)"),
             ("axiom://downloads", "Downloads", "Downloads (coming soon)"),
-            ("axiom://version", "Version", "Axiom 1.3.1"),
+            ("axiom://version", "Version", "Axiom 1.3.2"),
             (
                 "axiom://performance",
                 "Performance",
@@ -155,7 +156,7 @@ const NEWTAB_HTML: &str = r#"<!DOCTYPE html>
     <div class="mark" aria-label="Axiom"></div>
     <h1>AXIOM</h1>
     <p class="hint">Independent browser engine</p>
-    <div class="box">Search or enter an address above — Ctrl+L to focus</div>
+  <div class="box">Search or enter an address above — Ctrl+L to focus<br><br><a href="axiom://focus" style="color:#dbeafe;font-weight:700">Open Focus Space →</a></div>
     <p class="recent">No AI. No telemetry. Your profile stays local.</p>
   </div>
 </body>
@@ -174,5 +175,13 @@ mod tests {
         assert!(p.html.contains("AXIOM"));
         assert!(InternalPageRegistry::is_internal("axiom://newtab"));
         assert!(!InternalPageRegistry::is_internal("https://example.com"));
+    }
+
+    #[test]
+    fn resolves_focus_space_as_a_trusted_page() {
+        let reg = InternalPageRegistry::new();
+        let page = reg.resolve("axiom://focus").expect("focus page");
+        assert_eq!(page.title, "Focus Space");
+        assert!(InternalPageRegistry::is_internal("axiom://focus"));
     }
 }

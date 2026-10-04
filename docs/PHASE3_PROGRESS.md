@@ -1,7 +1,18 @@
 # Phase 3 Progress
 
-Date: 2026-09-29
+Date: 2026-10-04
 Stopped at: the end of **Phase 3 Wave I (Content Security Policy)**. (The older "Phase 3 Wave G" section further down is the document loading wave, which came before Wave G browser compatibility.) Axiom Search crawler and index work has not been started. The open security follow-ups are CSP report delivery and error muting for cross-origin scripts.
+
+## Release follow-up: Focus Space and trusted settings controls
+
+Date: 2026-10-04. Axiom 1.3.2 adds a profile-local `axiom://focus` workspace view, a native
+Orbit Rail launcher and `Ctrl+Shift+Space` shortcut. The page derives open/loading-tab,
+bookmark, history and active-download counts locally; it has no account, cloud sync, AI or
+telemetry path. Trusted settings actions now persist the performance HUD, session restore and
+exit-clearing policies, while the desktop respects the stored background-navigation preference.
+The current WPT testharness expectation baseline was intentionally refreshed after XML/XHTML
+parser improvements. This is release polish and compatibility accounting, not a claim of
+Chrome/Firefox parity.
 
 ## Post-Wave I compatibility follow-up: DOM Range, XML and nested-context audit
 

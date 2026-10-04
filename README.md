@@ -7,7 +7,7 @@
 [![CI](https://img.shields.io/badge/CI-cargo%20test%20%2B%20clippy-0B7A75?style=for-the-badge&logo=rust&logoColor=white)](https://github.com/theworker02/axiom)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2F2F2F?style=for-the-badge)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-2021-dea584?style=for-the-badge&logo=rust&logoColor=black)](https://www.rust-lang.org/)
-[![Release](https://img.shields.io/badge/release-1.3.1-447AFF?style=for-the-badge)](docs/RELEASES/1.3.1.md)
+[![Release](https://img.shields.io/badge/release-1.3.2-447AFF?style=for-the-badge)](docs/RELEASES/1.3.2.md)
 [![Platform](https://img.shields.io/badge/platform-Windows%20x86__64-111827?style=for-the-badge&logo=windows&logoColor=white)](docs/ACQUISITION.md)
 [![Privacy](https://img.shields.io/badge/privacy-no%20telemetry%20%E2%80%A2%20no%20AI-0B7A75?style=for-the-badge)](docs/PRIVACY.md)
 [![Engine](https://img.shields.io/badge/Engine-independent-4A5568?style=for-the-badge)](docs/REALITY.md)
@@ -144,7 +144,7 @@ Axiom is acquired from source. Full instructions:
 - **[`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)** — contribution workflow
 - **[`docs/CHANGELOG.md`](docs/CHANGELOG.md)** — release notes
 
-For the 1.3.1 release train, Windows builds use a per-user NSIS installer and a portable ZIP.
+For the 1.3.2 release train, Windows builds use a per-user NSIS installer and a portable ZIP.
 The installer is deliberately unsigned until an Authenticode certificate is available, so verify
 the published checksum before executing it. Automatic updates remain disabled.
 
@@ -163,6 +163,7 @@ the published checksum before executing it. Automatic updates remain disabled.
 | Ctrl+D | Toggle bookmark |
 | Alt+Left / Alt+Right | Back / Forward |
 | F1 | Toggle performance HUD |
+| Ctrl+Shift+Space | Open Focus Space workspace overview |
 | Enter (omnibox) | Navigate / search / activate suggestion |
 | Escape (omnibox) | Cancel edit; restore tab URL |
 
@@ -199,6 +200,7 @@ Internal pages:
 | `axiom://bookmarks` | Bookmarks |
 | `axiom://version` | Build / profile diagnostics |
 | `axiom://settings` | Trusted browser settings |
+| `axiom://focus` | Profile-local workspace overview |
 | `axiom://network` | Recent network diagnostics |
 | `axiom://cookies` | Trusted cookie inspection |
 
@@ -303,7 +305,8 @@ Persistence diagnostics use log target `axiom_persist`.
 | `docs/PHASE3_PROGRESS.md` | Current wave handoff |
 | `docs/NETWORKING.md` | Profile-owned network and cache pipeline |
 | `docs/COMPATIBILITY.md` | WPT/html5lib conformance evidence and known gaps |
-| `docs/RELEASES/1.3.1.md` | 1.3.1 release notes, install and safety status |
+| `docs/RELEASES/1.3.2.md` | 1.3.2 release notes, install and safety status |
+| `docs/FOCUS_SPACE.md` | Workspace overview, visual system and privacy boundary |
 | `docs/PRIVACY.md` | No-AI, no-telemetry and local-data privacy guarantees |
 | `docs/PROFILES.md` | Profile architecture |
 | `docs/PERSISTENCE.md` | Storage architecture |
